@@ -27,7 +27,7 @@ import (
 	"runtime"
 	"time"
 
-	as "github.com/aerospike/aerospike-client-go"
+	as "github.com/grossjo/aerospike-client-go"
 )
 
 var WritePolicy = as.NewWritePolicy(0, 0)

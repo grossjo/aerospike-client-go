@@ -19,8 +19,8 @@ package aerospike
 import (
 	"fmt"
 
-	. "github.com/aerospike/aerospike-client-go/types"
-	Buffer "github.com/aerospike/aerospike-client-go/utils/buffer"
+	. "github.com/grossjo/aerospike-client-go/types"
+	Buffer "github.com/grossjo/aerospike-client-go/utils/buffer"
 	lua "github.com/yuin/gopher-lua"
 )
 

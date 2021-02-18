@@ -32,9 +32,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	as "github.com/aerospike/aerospike-client-go"
-	asl "github.com/aerospike/aerospike-client-go/logger"
-	ast "github.com/aerospike/aerospike-client-go/types"
+	as "github.com/grossjo/aerospike-client-go"
+	asl "github.com/grossjo/aerospike-client-go/logger"
+	ast "github.com/grossjo/aerospike-client-go/types"
 )
 
 var (

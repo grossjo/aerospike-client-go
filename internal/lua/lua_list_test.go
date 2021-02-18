@@ -17,12 +17,12 @@
 package lua_test
 
 import (
-	"github.com/yuin/gopher-lua"
+	lua "github.com/yuin/gopher-lua"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	. "github.com/aerospike/aerospike-client-go/internal/lua"
+	. "github.com/grossjo/aerospike-client-go/internal/lua"
 )
 
 var _ = Describe("Lua List API Test", func() {

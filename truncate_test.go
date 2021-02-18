@@ -19,11 +19,11 @@ import (
 	"math/rand"
 	"time"
 
-	. "github.com/aerospike/aerospike-client-go"
-	// . "github.com/aerospike/aerospike-client-go/logger"
-	// . "github.com/aerospike/aerospike-client-go/types"
+	. "github.com/grossjo/aerospike-client-go"
+	// . "github.com/grossjo/aerospike-client-go/logger"
+	// . "github.com/grossjo/aerospike-client-go/types"
 
-	// . "github.com/aerospike/aerospike-client-go/utils/buffer"
+	// . "github.com/grossjo/aerospike-client-go/utils/buffer"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

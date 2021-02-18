@@ -20,9 +20,9 @@ import (
 	"runtime"
 	"sync"
 
-	. "github.com/aerospike/aerospike-client-go/internal/atomic"
-	. "github.com/aerospike/aerospike-client-go/types"
-	xornd "github.com/aerospike/aerospike-client-go/types/rand"
+	. "github.com/grossjo/aerospike-client-go/internal/atomic"
+	. "github.com/grossjo/aerospike-client-go/types"
+	xornd "github.com/grossjo/aerospike-client-go/types/rand"
 )
 
 type Result struct {

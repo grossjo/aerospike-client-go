@@ -23,10 +23,10 @@ import (
 
 	"golang.org/x/sync/semaphore"
 
-	. "github.com/aerospike/aerospike-client-go/internal/atomic"
-	lualib "github.com/aerospike/aerospike-client-go/internal/lua"
-	. "github.com/aerospike/aerospike-client-go/logger"
-	. "github.com/aerospike/aerospike-client-go/types"
+	. "github.com/grossjo/aerospike-client-go/internal/atomic"
+	lualib "github.com/grossjo/aerospike-client-go/internal/lua"
+	. "github.com/grossjo/aerospike-client-go/logger"
+	. "github.com/grossjo/aerospike-client-go/types"
 	lua "github.com/yuin/gopher-lua"
 )
 

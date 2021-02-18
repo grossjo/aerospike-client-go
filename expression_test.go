@@ -17,9 +17,9 @@ package aerospike_test
 import (
 	"fmt"
 
-	as "github.com/aerospike/aerospike-client-go"
-	atomic "github.com/aerospike/aerospike-client-go/internal/atomic"
-	ParticleType "github.com/aerospike/aerospike-client-go/internal/particle_type"
+	as "github.com/grossjo/aerospike-client-go"
+	atomic "github.com/grossjo/aerospike-client-go/internal/atomic"
+	ParticleType "github.com/grossjo/aerospike-client-go/internal/particle_type"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

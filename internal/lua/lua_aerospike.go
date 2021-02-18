@@ -17,8 +17,8 @@
 package lua
 
 import (
-	"github.com/aerospike/aerospike-client-go/logger"
-	"github.com/yuin/gopher-lua"
+	"github.com/grossjo/aerospike-client-go/logger"
+	lua "github.com/yuin/gopher-lua"
 )
 
 type LuaAerospike struct {

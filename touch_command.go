@@ -17,9 +17,9 @@ package aerospike
 import (
 	"fmt"
 
-	. "github.com/aerospike/aerospike-client-go/logger"
-	. "github.com/aerospike/aerospike-client-go/types"
-	Buffer "github.com/aerospike/aerospike-client-go/utils/buffer"
+	. "github.com/grossjo/aerospike-client-go/logger"
+	. "github.com/grossjo/aerospike-client-go/types"
+	Buffer "github.com/grossjo/aerospike-client-go/utils/buffer"
 )
 
 // guarantee touchCommand implements command interface

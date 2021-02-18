@@ -21,7 +21,7 @@ import (
 
 	"golang.org/x/sync/semaphore"
 
-	. "github.com/aerospike/aerospike-client-go/logger"
+	. "github.com/grossjo/aerospike-client-go/logger"
 )
 
 func (clnt *Client) scanPartitions(policy *ScanPolicy, tracker *partitionTracker, namespace string, setName string, rs *Recordset, binNames ...string) error {

@@ -17,10 +17,10 @@
 package lua
 
 import (
-	"github.com/aerospike/aerospike-client-go/internal/lua/resources"
-	"github.com/aerospike/aerospike-client-go/logger"
-	"github.com/aerospike/aerospike-client-go/types"
-	"github.com/yuin/gopher-lua"
+	luaLib "github.com/grossjo/aerospike-client-go/internal/lua/resources"
+	"github.com/grossjo/aerospike-client-go/logger"
+	"github.com/grossjo/aerospike-client-go/types"
+	lua "github.com/yuin/gopher-lua"
 )
 
 // SetPath sets the interpreter's current Lua Path

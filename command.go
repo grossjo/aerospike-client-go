@@ -23,11 +23,11 @@ import (
 	"net"
 	"time"
 
-	. "github.com/aerospike/aerospike-client-go/logger"
-	. "github.com/aerospike/aerospike-client-go/types"
+	. "github.com/grossjo/aerospike-client-go/logger"
+	. "github.com/grossjo/aerospike-client-go/types"
 
-	ParticleType "github.com/aerospike/aerospike-client-go/internal/particle_type"
-	Buffer "github.com/aerospike/aerospike-client-go/utils/buffer"
+	ParticleType "github.com/grossjo/aerospike-client-go/internal/particle_type"
+	Buffer "github.com/grossjo/aerospike-client-go/utils/buffer"
 )
 
 const (
@@ -2021,21 +2021,26 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 	notFirstIteration := false
 	isClientTimeout := false
 
+	id := time.Now().UnixNano()
+	Logger.Debug("%v entering for loop", id)
 	// Execute command until successful, timed out or maximum iterations have been reached.
 	for {
 		iterations++
-
+		Logger.Debug("%v executing iteration %v ", id, iterations)
 		// too many retries
 		if (policy.MaxRetries <= 0 && iterations > 0) || (policy.MaxRetries > 0 && iterations > policy.MaxRetries) {
 			if ae, ok := err.(AerospikeError); ok {
 				err = NewAerospikeError(ae.ResultCode(), fmt.Sprintf("command execution timed out on client: Exceeded number of retries. See `Policy.MaxRetries`. (last error: %s)", err.Error()))
 			}
+			Logger.Debug("%v setting in doubt", id)
 
 			return setInDoubt(err, isRead, commandSentCounter)
 		}
 
 		// Sleep before trying again, after the first iteration
 		if policy.SleepBetweenRetries > 0 && notFirstIteration {
+			Logger.Debug("%v sin sleep ", id)
+
 			// Do not sleep if you know you'll wake up after the deadline
 			if policy.TotalTimeout > 0 && time.Now().Add(interval).After(deadline) {
 				break
@@ -2048,6 +2053,8 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 		}
 
 		if notFirstIteration {
+			Logger.Debug("%v not first iteration ", id)
+
 			aerr, ok := err.(AerospikeError)
 			if !ifc.prepareRetry(ifc, isClientTimeout || (ok && aerr.ResultCode() != SERVER_NOT_AVAILABLE)) {
 				if bc, ok := ifc.(batcher); ok {
@@ -2067,13 +2074,20 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 
 		// check for command timeout
 		if policy.TotalTimeout > 0 && time.Now().After(deadline) {
+			Logger.Debug("%v After deadline ", id)
+
 			break
 		}
 
 		// set command node, so when you return a record it has the node
+		Logger.Debug("%v Getting Node ", id)
+
 		cmd.node, err = ifc.getNode(ifc)
+		Logger.Debug("%v Got Node ", id)
+
 		if cmd.node == nil || !cmd.node.IsActive() || err != nil {
 			isClientTimeout = true
+			Logger.Debug("%v Node busy: %v ", id, cmd.node.String())
 
 			// Node is currently inactive. Retry.
 			continue
@@ -2081,6 +2095,8 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 
 		// check if node has encountered too many errors
 		if err := cmd.node.validateErrorCount(); err != nil {
+			Logger.Debug("%v Node errored: %v ", id, cmd.node.String())
+
 			isClientTimeout = false
 
 			// Max error rate achieved, try again per policy
@@ -2096,6 +2112,8 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 				// the transaction to increase the iteration count.
 				iterations--
 			}
+			Logger.Debug("%v get connection error: %v ", id, cmd.node.String())
+
 			Logger.Debug("Node " + cmd.node.String() + ": " + err.Error())
 			continue
 		}
@@ -2104,8 +2122,12 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 		cmd.dataBuffer = cmd.conn.dataBuffer
 
 		// Set command buffer.
+		Logger.Debug("%v Writing buffer: %v ", id, cmd.node.String())
+
 		err = ifc.writeBuffer(ifc)
 		if err != nil {
+			Logger.Debug("%v Buffer failed: %v ", id, cmd.node.String())
+
 			// All runtime exceptions are considered fatal. Do not retry.
 			// Close socket to flush out possible garbage. Do not put back in pool.
 			cmd.conn.Close()
@@ -2114,8 +2136,12 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 		}
 
 		// Reset timeout in send buffer (destined for server) and socket.
+		Logger.Debug("%v bigendian?: %v ", id, cmd.node.String())
+
 		binary.BigEndian.PutUint32(cmd.dataBuffer[22:], 0)
 		if !deadline.IsZero() {
+			Logger.Debug("%v deadline not zero %v ", id, cmd.node.String())
+
 			serverTimeout := deadline.Sub(time.Now())
 			if serverTimeout < time.Millisecond {
 				serverTimeout = time.Millisecond
@@ -2125,12 +2151,16 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 
 		// now that the deadline has been set in the buffer, compress the contents
 		if err = cmd.compress(); err != nil {
+			Logger.Debug("%v Failed compression %v ", id, cmd.node.String())
+
 			return NewAerospikeError(SERIALIZE_ERROR, err.Error())
 		}
 
 		// Send command.
 		_, err = cmd.conn.Write(cmd.dataBuffer[:cmd.dataOffset])
 		if err != nil {
+			Logger.Debug("%v Failed write command %v ", id, cmd.node.String())
+
 			isClientTimeout = true
 			if deviceOverloadError(err) {
 				isClientTimeout = false
@@ -2147,9 +2177,12 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 		}
 		commandSentCounter++
 
+		Logger.Debug("%v Parsing results %v ", id, cmd.node.String())
 		// Parse results.
 		err = ifc.parseResult(ifc, cmd.conn)
 		if err != nil {
+			Logger.Debug("%v Failed parsing %v ", id, cmd.node.String())
+
 			if networkError(err) {
 				isClientTimeout = (err == ErrTimeout)
 				if err != ErrTimeout {
@@ -2196,11 +2229,13 @@ func (cmd *baseCommand) executeAt(ifc command, policy *BasePolicy, isRead bool, 
 		// Put connection back in pool.
 		// cmd.node.PutConnection(cmd.conn)
 		ifc.putConnection(cmd.conn)
+		Logger.Debug("%v success %v ", id, cmd.node.String())
 
 		// command has completed successfully.  Exit method.
 		return nil
 
 	}
+	Logger.Debug("%v timed out %v ", id, cmd.node.String())
 
 	// execution timeout
 	return ErrTimeout

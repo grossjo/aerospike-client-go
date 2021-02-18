@@ -17,10 +17,11 @@ package aerospike_test
 import (
 	"runtime"
 	"testing"
+
 	// "time"
 	_ "net/http/pprof"
 
-	. "github.com/aerospike/aerospike-client-go"
+	. "github.com/grossjo/aerospike-client-go"
 	_ "github.com/influxdata/influxdb/client"
 )
 

@@ -20,8 +20,8 @@ import (
 	"math"
 	"strings"
 
-	as "github.com/aerospike/aerospike-client-go"
-	ast "github.com/aerospike/aerospike-client-go/types"
+	as "github.com/grossjo/aerospike-client-go"
+	ast "github.com/grossjo/aerospike-client-go/types"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -97,11 +97,11 @@ var _ = Describe("Aerospike", func() {
 								float64(-math.MaxFloat64): float64(-math.MaxFloat64),
 								float32(math.MaxFloat32):  float32(math.MaxFloat32),
 								float64(math.MaxFloat64):  float64(math.MaxFloat64),
-								"true":    true,
-								"false":   false,
-								"string":  map[interface{}]interface{}{nil: "string", "string": 19},                // map to complex array
-								nil:       []int{18, 41},                                                           // array to complex map
-								"GeoJSON": as.NewGeoJSONValue(`{ "type": "Point", "coordinates": [0.00, 0.00] }"`), // bit-sign test
+								"true":                    true,
+								"false":                   false,
+								"string":                  map[interface{}]interface{}{nil: "string", "string": 19},                // map to complex array
+								nil:                       []int{18, 41},                                                           // array to complex map
+								"GeoJSON":                 as.NewGeoJSONValue(`{ "type": "Point", "coordinates": [0.00, 0.00] }"`), // bit-sign test
 							},
 						})
 
@@ -204,11 +204,11 @@ var _ = Describe("Aerospike", func() {
 								float64(-math.MaxFloat64): float64(-math.MaxFloat64),
 								float32(math.MaxFloat32):  float32(math.MaxFloat32),
 								float64(math.MaxFloat64):  float64(math.MaxFloat64),
-								"true":    true,
-								"false":   false,
-								"string":  map[interface{}]interface{}{nil: "string", "string": 19},                // map to complex array
-								nil:       []interface{}{18, 41},                                                   // array to complex map
-								"GeoJSON": as.NewGeoJSONValue(`{ "type": "Point", "coordinates": [0.00, 0.00] }"`), // bit-sign test
+								"true":                    true,
+								"false":                   false,
+								"string":                  map[interface{}]interface{}{nil: "string", "string": 19},                // map to complex array
+								nil:                       []interface{}{18, 41},                                                   // array to complex map
+								"GeoJSON":                 as.NewGeoJSONValue(`{ "type": "Point", "coordinates": [0.00, 0.00] }"`), // bit-sign test
 							},
 						})
 

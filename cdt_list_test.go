@@ -20,8 +20,8 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	as "github.com/aerospike/aerospike-client-go"
-	ast "github.com/aerospike/aerospike-client-go/types"
+	as "github.com/grossjo/aerospike-client-go"
+	ast "github.com/grossjo/aerospike-client-go/types"
 )
 
 var _ = Describe("CDT List Test", func() {
